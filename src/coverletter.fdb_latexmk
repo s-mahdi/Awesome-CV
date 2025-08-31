@@ -1,12 +1,10 @@
 # Fdb version 4
-["xdvipdfmx"] 1756675649.39105 "src/resume.xdv" "src/resume.pdf" "src/resume" 1756675649.60721 0
-  "examples/resume.xdv" 0 -1 0 ""
-  "src/resume.xdv" 1756675649.32404 51288 c311261a05a8b80420caec23952f793b "xelatex"
+["xdvipdfmx"] 1756675652.65485 "src/coverletter.xdv" "src/coverletter.pdf" "src/coverletter" 1756675652.91651 0
+  "src/coverletter.xdv" 1756675594.78588 29404 f9d3b20a1baf2283fd1a06b96aadd07a "xelatex"
   (generated)
-  "examples/resume.pdf"
-  "src/resume.pdf"
+  "src/coverletter.pdf"
   (rewritten before read)
-["xelatex"] 1756675647.85205 "src/resume.tex" "src/resume.xdv" "resume" 1756675649.60545 0
+["xelatex"] 1756675593.30183 "src/coverletter.tex" "src/coverletter.xdv" "coverletter" 1756675652.91503 0
   "/usr/local/texlive/2025basic/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1136768653 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/cm/cmmi5.tfm" 1136768653 1508 3b32edd0d68f6498a5a375e78f9edc5e ""
@@ -171,16 +169,12 @@
   "/usr/local/texlive/2025basic/texmf-dist/web2c/texmf.cnf" 1739380943 42148 61becc7c670cd061bb319c643c27fdd4 ""
   "/usr/local/texlive/2025basic/texmf-var/web2c/xetex/xelatex.fmt" 1741448333 5092505 adc40861f530b10866b2cb3b1638f0b6 ""
   "/usr/local/texlive/2025basic/texmf.cnf" 1741448314 628 81d1ada0f601fb1ffa62f1323192d946 ""
+  "src/assets/profile.png" 1748607954.22108 73891 2eb7e6b734eb4da579e29d735cc2d768 ""
   "src/awesome-cv.cls" 1756673891.47939 30238 e9adc974a28d4eb5c5ad614394d36175 ""
-  "src/resume.aux" 1756675649.32335 72 8c65bdc4d59188fb5b97343f16100895 "xelatex"
-  "src/resume.tex" 1756675555.76614 3824 f5034457f7c0438a785262bd2b65c5ba ""
-  "src/resume/education.tex" 1756672935.23846 695 147db07f4651e1bb8bdc3b2ec151c1b4 ""
-  "src/resume/experience.tex" 1756672309.96476 3316 ca8d6ac54ec32709dbab32462b063660 ""
-  "src/resume/projects.tex" 1756673810.68602 2126 a12f220adbe2449faeda0241481887af ""
-  "src/resume/skills.tex" 1756673416.04128 1320 c3fed78673068e1186cfd8a7031e98db ""
-  "src/resume/summary.tex" 1756674315.79761 816 2d56f800ca0fcb086ab01076e13a6b32 ""
+  "src/coverletter.aux" 1756675594.7852 72 49953267bd44a605718cb5e0eb508bfe "xelatex"
+  "src/coverletter.tex" 1756675546.37856 5987 91f567963ee46a54cdadb403eee31d3c ""
   (generated)
-  "src/resume.aux"
-  "src/resume.log"
-  "src/resume.xdv"
+  "src/coverletter.aux"
+  "src/coverletter.log"
+  "src/coverletter.xdv"
   (rewritten before read)
