@@ -12,6 +12,19 @@
 *.dvi
 *-converted-to.*
 
+## SyncTeX files:
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+resume.synctex
+resume.synctex(busy)
+
+## Build artifacts:
+*.pdf
+*.xdv
+*.fdb_latexmk
+
 ### Editor ###
 ## Vim & Emacs temp files:
 .*sw[op]
