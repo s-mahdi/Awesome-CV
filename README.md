@@ -1,93 +1,73 @@
 <h1 align="center">
-  <a href="https://github.com/posquit0/Awesome-CV" title="AwesomeCV Documentation">
+  <a href="https://github.com/s-mahdi/Awesome-CV" title="Mahdi's Awesome CV">
     <img alt="AwesomeCV" src="https://github.com/posquit0/Awesome-CV/raw/master/icon.png" width="200px" height="200px" />
   </a>
   <br />
-  Awesome CV
+  Mahdi Hoseini's CV
 </h1>
 
 <p align="center">
-  LaTeX template for your outstanding job application
+  My professional CV and cover letter built with LaTeX
 </p>
 
 <div align="center">
-  <a href="https://www.paypal.me/posquit0">
-    <img alt="Donate" src="https://img.shields.io/badge/Donate-PayPal-blue.svg" />
+  <a href="https://raw.githubusercontent.com/s-mahdi/Awesome-CV/main/src/resume.pdf">
+    <img alt="Resume PDF" src="https://img.shields.io/badge/resume-pdf-green.svg" />
   </a>
-  <a href="https://github.com/posquit0/Awesome-CV/actions/workflows/main.yml">
-    <img alt="GitHub Actions" src="https://github.com/posquit0/Awesome-CV/actions/workflows/main.yml/badge.svg" />
-  </a>
-  <a href="https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume.pdf">
-    <img alt="Example Resume" src="https://img.shields.io/badge/resume-pdf-green.svg" />
-  </a>
-  <a href="https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/cv.pdf">
-    <img alt="Example CV" src="https://img.shields.io/badge/cv-pdf-green.svg" />
-  </a>
-  <a href="https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter.pdf">
-    <img alt="Example Coverletter" src="https://img.shields.io/badge/coverletter-pdf-green.svg" />
+  <a href="https://raw.githubusercontent.com/s-mahdi/Awesome-CV/main/src/coverletter.pdf">
+    <img alt="Cover Letter PDF" src="https://img.shields.io/badge/coverletter-pdf-green.svg" />
   </a>
 </div>
 
 <br />
 
-## What is Awesome CV?
+## What is This Project?
 
-**Awesome CV** is LaTeX template for a **CV(Curriculum Vitae)**, **Résumé** or **Cover Letter** inspired by [Fancy CV](https://www.sharelatex.com/templates/cv-or-resume/fancy-cv). It is easy to customize your own template, especially since it is really written by a clean, semantic markup.
+This is **Mahdi Hoseini's** professional CV and cover letter, built using the **Awesome CV** LaTeX template. The template is inspired by [Fancy CV](https://www.sharelatex.com/templates/cv-or-resume/fancy-cv) and provides a clean, semantic markup that's easy to customize.
 
-
-## Donate
-
-Please help keep this project alive! Donations are welcome and will go towards further development of this project.
-
-    PayPal: paypal.me/posquit0
-
-*Thank you for your support!*
-
-## Preview
-
-#### Résumé
-
-You can see [PDF](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume.pdf)
-
-| Page. 1 | Page. 2 |
-|:---:|:---:|
-| [![Résumé](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume-0.png)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume.pdf)  | [![Résumé](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume-1.png)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/resume.pdf) |
-
-#### Cover Letter
-
-You can see [PDF](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter.pdf)
-
-| Without Sections | With Sections |
-|:---:|:---:|
-| [![Cover Letter(Traditional)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter-0.png)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter.pdf)  | [![Cover Letter(Awesome)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter-1.png)](https://raw.githubusercontent.com/posquit0/Awesome-CV/master/examples/coverletter.pdf) |
+### Features
+- **Professional Design**: Clean and modern layout
+- **LaTeX Powered**: High-quality PDF output
+- **Customizable**: Easy to modify colors, fonts, and content
+- **Version Controlled**: All changes tracked with Git
+- **CI/CD Ready**: Automated PDF generation with GitHub Actions
 
 
 ## Quick Start
 
-* [**Edit Résumé on OverLeaf.com**](https://www.overleaf.com/latex/templates/awesome-cv/tvmzpvdjfqxp)
-* [**Edit Cover Letter on OverLeaf.com**](https://www.overleaf.com/latex/templates/awesome-cv-cover-letter/pfzzjspkthbk)
-
-**_Note:_ Above services do not guarantee up-to-date source code of Awesome CV**
-
-
-## How to Use
-
-#### Requirements
-
-A full TeX distribution is assumed.  [Various distributions for different operating systems (Windows, Mac, \*nix) are available](http://tex.stackexchange.com/q/55437) but TeX Live is recommended.
-You can [install TeX from upstream](https://tex.stackexchange.com/q/1092) (recommended; most up-to-date) or use `sudo apt-get install texlive-full` if you really want that.  (It's generally a few years behind.)
-
-If you don't want to install the dependencies on your system, this can also be obtained via [Docker](https://docker.com).
-
-#### Usage
-
-At a command prompt, run
+### Build Commands
 
 ```bash
-xelatex {your-cv}.tex
+# Build resume
+make resume.pdf
+
+# Build cover letter
+make coverletter.pdf
+
+# Build everything
+make examples
+
+# Clean build artifacts
+make clean
 ```
 
-Or using docker:
+### Requirements
+
+A full TeX distribution is required. [TeX Live](https://tug.org/texlive/) is recommended.
+
+**macOS:**
+```bash
+brew install --cask mactex
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install texlive-full
+```
+
+### Docker Alternative
+
+If you don't want to install TeX locally:
 
 ```bash
 docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD":/doc texlive/texlive:latest make
@@ -109,18 +89,19 @@ In either case, this should result in the creation of ``{your-cv}.pdf``
 
 ## Contact
 
-You are free to take my `.tex` file and modify it to create your own resume. Please don't use my resume for anything else without my permission, though!
+This is my personal CV repository. Feel free to use the LaTeX template as inspiration for your own resume, but please don't use my personal information or content without permission.
 
-If you have any questions, feel free to join me at [`#posquit0` on Freenode](irc://irc.freenode.net/posquit0) and ask away. Click [here](https://kiwiirc.com/client/irc.freenode.net/posquit0) to connect.
+For questions about the LaTeX template or setup, feel free to open an issue on this repository.
 
-Good luck!
+## Author
+- **Mahdi Hoseini** - [s-mahdi](https://github.com/s-mahdi)
 
+## Template Credits
 
-## Maintainers
-- [posquit0](https://github.com/posquit0)
-- [OJFord](https://github.com/OJFord)
+This CV is built using the **Awesome CV** LaTeX template originally created by [posquit0](https://github.com/posquit0).
 
-
-## See Also
-
-* [Awesome Identity](https://github.com/posquit0/hugo-awesome-identity) - A single-page Hugo theme to introduce yourself.
+### Dependencies
+- [**LaTeX**](https://www.latex-project.org) - Typesetting system
+- [**FontAwesome6**](https://github.com/braniii/fontawesome) - Icon package
+- [**Roboto**](https://github.com/google/roboto) - Primary font
+- [**Source Sans Pro**](https://github.com/adobe-fonts/source-sans-pro) - Secondary font
