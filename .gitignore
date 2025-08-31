@@ -12,6 +12,12 @@
 *.dvi
 *-converted-to.*
 
+## SyncTeX files:
+*.synctex
+*.synctex(busy)
+resume.synctex
+resume.synctex(busy)
+
 ### Editor ###
 ## Vim & Emacs temp files:
 .*sw[op]
