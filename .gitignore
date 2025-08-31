@@ -18,6 +18,11 @@
 resume.synctex
 resume.synctex(busy)
 
+## Build artifacts:
+*.pdf
+*.xdv
+*.fdb_latexmk
+
 ### Editor ###
 ## Vim & Emacs temp files:
 .*sw[op]
