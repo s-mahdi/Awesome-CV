@@ -1,6 +1,6 @@
 .PHONY: examples
 
-CC = xelatex
+CC = latexmk -xelatex
 EXAMPLES_DIR = examples
 RESUME_DIR = examples/resume
 CV_DIR = examples/cv
