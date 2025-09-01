@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all build clean clean-logs
 
 CC = latexmk -xelatex
 SRC_DIR = src
@@ -23,3 +23,8 @@ clean:
 
 clean-logs:
 	rm -rf $(SRC_DIR)/*.log
+
+build:
+	mkdir -p build
+	rm -rf build/*
+	cp src/resume.pdf "build/Mahdi Hoseini - Senior front-end developer.pdf"
