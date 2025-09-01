@@ -19,4 +19,7 @@ coverletter.pdf: $(SRC_DIR)/coverletter.tex
 	$(CC) -output-directory=$(SRC_DIR) $<
 
 clean:
-	rm -rf $(SRC_DIR)/*.pdf $(SRC_DIR)/*.xdv $(SRC_DIR)/*.fdb_latexmk $(SRC_DIR)/*.fls $(SRC_DIR)/*.synctex.gz *.fls
+	rm -rf $(SRC_DIR)/*.pdf $(SRC_DIR)/*.xdv $(SRC_DIR)/*.fdb_latexmk $(SRC_DIR)/*.fls $(SRC_DIR)/*.synctex.gz *.fls $(SRC_DIR)/*.aux
+
+clean-logs:
+	rm -rf $(SRC_DIR)/*.log

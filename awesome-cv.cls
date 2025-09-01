@@ -747,16 +747,18 @@
 }
 
 % Define an environment for cvskill
+% Adjusted: widen label column so long headings fit one line; add small column gap.
 \newenvironment{cvskills}{%
   \vspace{\acvSectionContentTopSkip}
-  \vspace{-2.0mm}
-  \begin{center}
-    \setlength\tabcolsep{1ex}
-    \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l L{\textwidth * \real{0.9}}}
-      }{%
-    \end{tabular*}
-  \end{center}
+  \vspace{-2.0mm}% keep compact vertical spacing
+  % Column setup
+  \setlength{\tabcolsep}{0.75ex}% horizontal gap between label and content
+  \setlength{\extrarowheight}{0pt}
+  \newlength{\cvskilllabelwidth}
+  \setlength{\cvskilllabelwidth}{4.3cm}% ensures 'Programming Languages' stays on one line
+  \begin{tabular*}{\textwidth}{@{}p{\cvskilllabelwidth} p{\dimexpr\textwidth-\cvskilllabelwidth-2\tabcolsep\relax}@{}}%
+}{%
+  \end{tabular*}%
 }
 % Define a line of cv information(skill)
 % Usage: \cvskill{<type>}{<skillset>}
