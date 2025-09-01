@@ -515,7 +515,7 @@
       {}%
       {%
         \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-        \href{https://github.com/\@github}{\faSquareGithub\acvHeaderIconSep\@github}%
+        \href{https://github.com/\@github}{\faSquareGithub\acvHeaderIconSep https://github.com/\@github}%
       }%
       \ifthenelse{\isundefined{\@gitlab}}%
       {}%
@@ -539,7 +539,7 @@
       {}%
       {%
         \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-        \href{https://www.linkedin.com/in/\@linkedin}{\faLinkedin\acvHeaderIconSep\@linkedin}%
+        \href{https://www.linkedin.com/in/\@linkedin}{\faLinkedin\acvHeaderIconSep https://www.linkedin.com/in/\@linkedin}%
       }%
       \ifthenelse{\isundefined{\@orcid}}%
       {}%
@@ -753,11 +753,12 @@
   \vspace{-2.0mm}% keep compact vertical spacing
   % Column setup
   \setlength{\tabcolsep}{0.75ex}% horizontal gap between label and content
-  \setlength{\extrarowheight}{0pt}
+  \setlength{\extrarowheight}{-0.4pt}% slightly tighter row spacing
+  \renewcommand{\arraystretch}{0.9}% reduce vertical padding inside rows
   \newlength{\cvskilllabelwidth}
   \setlength{\cvskilllabelwidth}{4.3cm}% ensures 'Programming Languages' stays on one line
   \begin{tabular*}{\textwidth}{@{}p{\cvskilllabelwidth} p{\dimexpr\textwidth-\cvskilllabelwidth-2\tabcolsep\relax}@{}}%
-}{%
+    }{%
   \end{tabular*}%
 }
 % Define a line of cv information(skill)
