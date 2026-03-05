@@ -18,15 +18,25 @@
 % CONFIGURATIONS
 %-------------------------------------------------------------------------------
 % A4 paper size by default, use 'letterpaper' for US letter
-\documentclass[11pt, a4paper]{awesome-cv}
+\documentclass[10pt, a4paper]{awesome-cv}
 
 % Configure page margins with geometry
-\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.8cm, footskip=.5cm}
+\geometry{left=0.90cm, right=0.90cm, top=0.90cm, bottom=0.90cm, footskip=0.55cm}
 
 % Color for highlights
 % Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, awesome-orange
 %                 awesome-nephritis, awesome-concrete, awesome-darknight
-\colorlet{awesome}{awesome-red}
+\definecolor{acvBlue}{HTML}{1F90FF}
+\definecolor{acvDarkGray}{HTML}{000000}
+\definecolor{acvTextGray}{HTML}{3E3E3E}
+\definecolor{acvSkillGray}{HTML}{3E3E3E}
+\definecolor{acvMetaGray}{HTML}{3E3E3E}
+\definecolor{acvDashGray}{HTML}{CCCCCC}
+\definecolor{acvMainRuleColor}{HTML}{000000}
+\colorlet{awesome}{acvBlue}
+\colorlet{text}{acvTextGray}
+\colorlet{graytext}{acvTextGray}
+\colorlet{sectiondivider}{acvMainRuleColor}
 % Uncomment if you would like to specify your own color
 % \definecolor{awesome}{HTML}{3E6D9C}
 
@@ -41,8 +51,43 @@
 % Set false if you don't want to highlight section with awesome color
 \setbool{acvSectionColorHighlight}{true}
 
-% If you would like to change the social information separator from a pipe (|) to something else
-\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+%-------------------------------------------------------------------------------
+% STYLE TOKENS
+%-------------------------------------------------------------------------------
+% Typography system
+\renewcommand*{\headerfont}{\sourcesanspro}
+\renewcommand*{\headerfontlight}{\sourcesansprolight}
+\renewcommand*{\bodyfont}{\sourcesanspro}
+\renewcommand*{\bodyfontlight}{\sourcesanspro}
+\setlength{\parskip}{0pt}
+
+% Rule thickness and spacing scale
+\newcommand{\acvMainRuleThickness}{1.05pt}
+\newcommand{\acvDashedRuleThickness}{0.46pt}
+\newcommand{\acvDashedSeparatorGap}{0.24ex}
+\newcommand{\acvDashedSeparatorRightGap}{0.62ex}
+\newcommand{\acvSpaceXS}{0.4mm}
+\newcommand{\acvSpaceS}{0.8mm}
+\newcommand{\acvSpaceM}{1.2mm}
+\newcommand{\acvSpaceL}{1.8mm}
+\newcommand{\acvSkillBlockGap}{0.18ex}
+\renewcommand{\acvSectionTopSkip}{1.7mm}
+\renewcommand{\acvSectionContentTopSkip}{1.0mm}
+\renewcommand{\acvHeaderAfterNameSkip}{1.2mm}
+\renewcommand{\acvHeaderAfterPositionSkip}{0.9mm}
+\renewcommand{\acvHeaderAfterAddressSkip}{0.9mm}
+\renewcommand{\acvHeaderAfterSocialSkip}{2.8mm}
+
+% Column geometry
+\newcommand{\acvLeftColumnWidth}{0.61\textwidth}
+\newcommand{\acvRightColumnWidth}{0.35\textwidth}
+\newcommand{\acvColumnGutter}{0.04\textwidth}
+
+% List indentation tokens
+\newlength{\acvBulletLeftMargin}
+\newlength{\acvBulletLabelSep}
+\setlength{\acvBulletLeftMargin}{1.45em}
+\setlength{\acvBulletLabelSep}{0.45em}
 
 
 %-------------------------------------------------------------------------------
@@ -51,14 +96,14 @@
 %-------------------------------------------------------------------------------
 % Available options: circle|rectangle,edge/noedge,left/right
 % \photo[rectangle,edge,right]{./src/assets/profile.png}
-\name{Mahdi}{Hoseini}
-\position{Senior Front End Engineer}
+\name{MAHDI}{HOSSEINI}
+\position{Front-End Engineer | React | Next.js | TypeScript Specialist}
 % \address{235, World Cup buk-ro, Mapo-gu, Seoul, 03936, Republic of Korea}
-\address{Tehran, Iran (Willing to relocate)}
+\address{Yerevan, Armenia}
 
 % \mobile{(+82) 10-9030-1843}
-\mobile{(+98) 936-101-6765}
-\email{mahdi.hoseini.dev@gmail.com}
+\mobile{+37477870243}
+\email{mahdi.hosseini.dev@gmail.com}
 %\dateofbirth{January 1st, 1970}
 % \homepage{www.posquit0.com}
 \github{s-mahdi}
@@ -79,34 +124,249 @@
 % \extrainfo{extra information}
 
 
+% Header typography
+\renewcommand*{\headerfirstnamestyle}[1]{{
+  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
+}}
+\renewcommand*{\headerlastnamestyle}[1]{{
+  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
+}}
+\renewcommand*{\headerpositionstyle}[1]{{
+  \fontsize{9pt}{10.5pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=2.0}\color{acvBlue}\MakeUppercase{#1}
+}}
+\renewcommand*{\headeraddressstyle}[1]{{
+  \fontsize{8.6pt}{10pt}\headerfontlight\fontseries{b}\selectfont\color{acvBlue} #1
+}}
+\renewcommand*{\headersocialstyle}[1]{{
+  \fontsize{7.4pt}{9.2pt}\headerfontlight\fontseries{b}\selectfont\color{acvTextGray} #1
+}}
+
+% Section and body typography
+\renewcommand*{\paragraphstyle}{%
+  \fontsize{8.7pt}{10.4pt}\bodyfontlight\upshape\color{acvTextGray}\tolerance=200\emergencystretch=2em
+}
+\renewcommand*{\entrytitlestyle}[1]{{\fontsize{9.45pt}{10.7pt}\bodyfont\bfseries\color{acvDarkGray} #1}}
+\renewcommand*{\entrypositionstyle}[1]{{
+  \fontsize{7.8pt}{9.1pt}\bodyfont\scshape\mdseries\addfontfeatures{LetterSpace=1.4}\color{acvTextGray} #1
+}}
+\renewcommand*{\entrydatestyle}[1]{{\fontsize{7.9pt}{9.1pt}\bodyfontlight\upshape\color{acvMetaGray} #1}}
+\renewcommand*{\entrylocationstyle}[1]{{\fontsize{8.45pt}{9.7pt}\bodyfont\itshape\color{acvBlue} #1}}
+\renewcommand*{\descriptionstyle}[1]{{\fontsize{8.45pt}{10.1pt}\bodyfontlight\upshape\color{acvTextGray} #1}}
+\renewcommand*{\skilltypestyle}[1]{{\fontsize{8.25pt}{9.2pt}\bodyfont\bfseries\color{acvBlue} #1}}
+\renewcommand*{\skillsetstyle}[1]{{\descriptionstyle{#1}}}
+
+% Language lines in right column
+\newcommand*{\languageitemstyle}[1]{{\fontsize{8.45pt}{9.3pt}\bodyfont\bfseries\color{acvDarkGray} #1}}
+
+% Reusable right-column block for skills categories
+\newcommand{\skillblock}[2]{%
+  \skilltypestyle{#1}\\[0.1ex]%
+  \skillsetstyle{#2}\par\vspace{\acvSkillBlockGap}%
+}
+
+% Thin dashed separator for subsection boundaries
+\newcommand{\acvDashedSeparator}{%
+  \par\nointerlineskip\vspace{\acvDashedSeparatorGap}%
+  \noindent\begingroup\color{acvDashGray}%
+  \raisebox{0.22ex}{\hbox to \linewidth{\leaders\hbox to 4.1pt{\hss\rule{2.7pt}{\acvDashedRuleThickness}\hss}\hfill}}%
+  \endgroup\par\nointerlineskip\vspace{\acvDashedSeparatorGap}%
+}
+
+% Roomier dashed separator for right-column section blocks
+\newcommand{\acvDashedSeparatorRoomy}{%
+  \par\nointerlineskip\vspace{\acvDashedSeparatorRightGap}%
+  \noindent\begingroup\color{acvDashGray}%
+  \raisebox{0.22ex}{\hbox to \linewidth{\leaders\hbox to 4.1pt{\hss\rule{2.7pt}{\acvDashedRuleThickness}\hss}\hfill}}%
+  \endgroup\par\nointerlineskip\vspace{\acvDashedSeparatorRightGap}%
+}
+
+% Section title with Summary two-tone wordmark and thin divider
+\renewcommand{\cvsection}[1]{%
+  \vspace{\acvSectionTopSkip}%
+  \noindent
+  {{\fontsize{11.2pt}{12.4pt}\bodyfont\bfseries\color{acvDarkGray}#1}}%
+  \phantomsection\\[-0.90ex]%
+  {\color{acvMainRuleColor}\rule{\textwidth}{\acvMainRuleThickness}}%
+}
+
+% Compact paragraph block spacing
+\renewenvironment{cvparagraph}{%
+  \vspace{1.0mm}
+  \paragraphstyle%
+}{%
+  \par\vspace{0.4mm}
+}
+
+% Remove centered wrapper that adds extra vertical drift between entries
+\renewenvironment{cventries}{%
+  \vspace{\acvSectionContentTopSkip}
+}{}
+
+% Entry layout: company+location on row 1, role+date on row 2
+\newlength{\acvEntryMetaWidth}
+\setlength{\acvEntryMetaWidth}{4.35cm}
+\renewcommand*{\cventry}[5]{%
+  \vspace{0.55mm}%
+  \setlength\tabcolsep{0pt}%
+  \setlength{\extrarowheight}{0pt}%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\dimexpr\textwidth-\acvEntryMetaWidth\relax} R{\acvEntryMetaWidth}}
+    \entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+    \entrypositionstyle{#1} & \entrydatestyle{#4} \\
+    \ifstrempty{#5}
+      {}
+      {\multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}} \\}
+  \end{tabular*}\par\vspace{0.55mm}%
+}
+
+% Auto-updating date ranges with computed duration.
+% Usage:
+%   \acvDateRange{startMonth}{startYear}{0}{0}           -> ... - Present (X years and Y months)
+%   \acvDateRange{startMonth}{startYear}{endMonth}{endYear} -> ... - MM/YYYY (X years and Y months)
+\newcommand{\acvFormatMonthYear}[2]{%
+  \ifnum#1<10 0\fi#1/#2%
+}
+\newcommand{\acvDurationText}[4]{%
+  \begingroup
+    % Compute year/month delta with borrow to avoid e-TeX rounded division.
+    \count0=\numexpr #4-#2\relax % years
+    \count2=\numexpr #3-#1\relax % months
+    \ifnum\count2<0
+      \advance\count0 by -1
+      \advance\count2 by 12
+    \fi
+    \ifnum\count0<0
+      \count0=0
+      \count2=0
+    \fi
+    \ifnum\count0>0
+      \number\count0 y%
+      \ifnum\count2>0~and~\number\count2 m\fi
+    \else
+      \number\count2 m%
+    \fi
+  \endgroup
+}
+\newcommand{\acvDateRange}[4]{%
+  \acvFormatMonthYear{#1}{#2}\space-\space
+  \begingroup
+    \def\acvEndMonth{#3}%
+    \def\acvEndYear{#4}%
+    \ifnum#3=0\relax
+      Present%
+      \edef\acvEndMonth{\number\month}%
+      \edef\acvEndYear{\number\year}%
+    \else
+      \acvFormatMonthYear{#3}{#4}%
+    \fi
+    \space(\acvDurationText{#1}{#2}{\acvEndMonth}{\acvEndYear})%
+  \endgroup
+}
+
+% Smaller bullet with hanging indent and compact rhythm
+\renewenvironment{cvitems}{%
+  \vspace{-2.6mm}
+  \begin{justify}
+    \begin{itemize}[
+      leftmargin=\acvBulletLeftMargin,
+      labelsep=\acvBulletLabelSep,
+      itemsep=0.52ex,
+      topsep=0.20ex,
+      parsep=0.08ex,
+      partopsep=0pt
+    ]
+      \setlength{\parskip}{0pt}
+      \renewcommand{\labelitemi}{\raisebox{0.26ex}{\scalebox{0.58}{$\bullet$}}}
+}{%
+    \end{itemize}
+  \end{justify}
+  \vspace{0.10mm}
+}
+
+\makeatletter
+% Consistent icon style for header contact row
+\newcommand*{\acvHeaderIcon}[1]{{\color{acvBlue}\fontsize{7.2pt}{7.2pt}\selectfont #1}}
+\newcommand*{\acvHeaderInlineSep}{\mbox{\hspace{0.42em}\textcolor{acvBlue}{|}\hspace{0.42em}}}
+\newcommand*{\acvHeaderContactItem}[3]{\href{#2}{\mbox{\acvHeaderIcon{#1}\hspace{0.30em}#3}}}
+
+% Custom header: left aligned, location line without icon, one compact contact row
+\renewcommand*{\makecvheader}[1][L]{%
+  \newlength{\headertextwidth}
+  \setlength{\headertextwidth}{\textwidth}
+  \begin{minipage}[c]{\headertextwidth}
+    \raggedright
+    \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
+    \\[\acvHeaderAfterNameSkip]%
+    \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position}\\[\acvHeaderAfterPositionSkip]}%
+    \ifthenelse{\isundefined{\@address}}{}{\headeraddressstyle{\@address}\\[\acvHeaderAfterAddressSkip]}%
+    \headersocialstyle{%
+      \newbool{isstart}%
+      \setbool{isstart}{true}%
+      % Email first
+      \ifthenelse{\isundefined{\@email}}%
+      {}%
+      {%
+        \acvHeaderContactItem{\faEnvelope}{mailto:\@email}{\@email}%
+        \setbool{isstart}{false}%
+      }%
+      % Then phone
+      \ifthenelse{\isundefined{\@mobile}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faMobile}{\@teluri}{\@mobile}%
+      }%
+      % LinkedIn
+      \ifthenelse{\isundefined{\@linkedin}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faLinkedin}{https://www.linkedin.com/in/\@linkedin}{\@linkedin}%
+      }%
+      % GitHub
+      \ifthenelse{\isundefined{\@github}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faSquareGithub}{https://github.com/\@github}{\@github}%
+      }%
+    } \\[\acvHeaderAfterSocialSkip]%
+  \end{minipage}%
+}
+\makeatother
+
 %-------------------------------------------------------------------------------
 \begin{document}
 
 % Print the header with above personal information
 % Give optional argument to change alignment(C: center, L: left, R: right)
-\makecvheader[C]
+\makecvheader[L]
 
-% Print the footer with 3 arguments(<left>, <center>, <right>)
-% Leave any of these blank if they are not needed
-\makecvfooter
-{\today}
-{Mahdi Hoseini~~~·~~~Résumé}
-{\thepage}
 %-------------------------------------------------------------------------------
 %	CV/RESUME CONTENT
 %	Each section is imported separately, open each file in turn to modify content
+%	Two-column layout: experience (left), skills+education+languages (right)
 %-------------------------------------------------------------------------------
 \input{resume/summary.tex}
-\input{resume/skills.tex}
-\input{resume/experience.tex}
-% \input{resume/honors.tex}
-% \input{resume/certificates.tex}
-% \input{resume/presentation.tex}
-% \input{resume/writing.tex}
-% \input{resume/committees.tex}
-% \input{resume/projects.tex}
-\input{resume/education.tex}
-% \input{resume/extracurricular.tex}
+
+\noindent
+\begin{minipage}[t]{\acvLeftColumnWidth}
+  \vspace{0pt}
+  \input{resume/experience.tex}
+\end{minipage}%
+\hspace{\acvColumnGutter}%
+\begin{minipage}[t]{\acvRightColumnWidth}
+  \vspace{0pt}
+  \input{resume/skills.tex}
+  % \input{resume/honors.tex}
+  % \input{resume/certificates.tex}
+  % \input{resume/presentation.tex}
+  % \input{resume/writing.tex}
+  % \input{resume/committees.tex}
+  % \input{resume/projects.tex}
+  \input{resume/education.tex}
+  % \input{resume/extracurricular.tex}
+  \input{resume/languages.tex}
+\end{minipage}
 
 
 %-------------------------------------------------------------------------------
