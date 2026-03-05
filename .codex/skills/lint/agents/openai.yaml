@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lint Resume LaTeX"
+  short_description: "Lint LaTeX resume sources"
+  default_prompt: "Use $lint to check resume LaTeX sources for formatting, prose, and build warnings."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Experience"
+  short_description: "Add resume experience entries"
+  default_prompt: "Use $add-experience to add a new role entry in src/resume/experience.tex."

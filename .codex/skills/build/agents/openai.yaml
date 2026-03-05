@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Resume"
+  short_description: "Build resume PDF and report errors"
+  default_prompt: "Use $build to run the resume build and report actionable LaTeX errors."

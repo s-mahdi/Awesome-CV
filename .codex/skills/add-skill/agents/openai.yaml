@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Skill"
+  short_description: "Update resume skill categories"
+  default_prompt: "Use $add-skill to add or update categories in src/resume/skills.tex."

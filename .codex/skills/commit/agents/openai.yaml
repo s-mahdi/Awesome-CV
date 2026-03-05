@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit Changes"
+  short_description: "Create atomic conventional commits"
+  default_prompt: "Use $commit to stage related files and write atomic Conventional Commits."

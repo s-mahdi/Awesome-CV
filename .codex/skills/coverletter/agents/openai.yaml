@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cover Letter"
+  short_description: "Tailor cover letters for job posts"
+  default_prompt: "Use $coverletter to draft or update src/coverletter.tex for a target role."

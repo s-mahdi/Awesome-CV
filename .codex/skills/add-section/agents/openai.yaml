@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Section"
+  short_description: "Add and wire resume sections"
+  default_prompt: "Use $add-section to create a new resume section file and wire it into src/resume.tex."

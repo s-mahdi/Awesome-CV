@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tailor Resume"
+  short_description: "Tailor resume to target roles"
+  default_prompt: "Use $tailor to align resume summary, skills, and experience to a job posting."

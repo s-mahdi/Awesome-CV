@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scaffold Project"
+  short_description: "Scaffold LaTeX project templates"
+  default_prompt: "Use $scaffold to generate a small, medium, or large LaTeX project structure."
