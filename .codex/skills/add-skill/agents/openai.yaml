@@ -1,4 +1,4 @@
 interface:
   display_name: "Add Skill"
   short_description: "Update resume skill categories"
-  default_prompt: "Use $add-skill to add or update categories in src/resume/skills.tex."
+  default_prompt: "Use $add-skill to update resume skills and mirror any new agent skill in both .claude/skills and .codex/skills."

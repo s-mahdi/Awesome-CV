@@ -1,6 +1,6 @@
 ---
 name: add-skill
-description: Add a new skill category or update an existing one in the resume
+description: Add or update resume skills, and mirror any new agent skill in both .claude/skills and .codex/skills
 ---
 
 # Add or Update Skill
@@ -18,3 +18,5 @@ Modify `src/resume/skills.tex` to add new skills.
 - Match the existing formatting style.
 - Keep skill lists comma-separated within each `\skillblock`.
 - Do not duplicate skills already listed.
+- If the request adds a new agent skill (skill folder/SKILL.md), create and update it in both `.claude/skills/<name>/` and `.codex/skills/<name>/`.
+- Keep the two skill versions synchronized after every edit.
