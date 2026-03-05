@@ -1,0 +1,17 @@
+name: build-latex
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: src/main.tex
+          work_in_root_file_dir: true
+          latexmk_use_lualatex: true
