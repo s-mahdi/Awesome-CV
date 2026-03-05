@@ -23,42 +23,12 @@
 % Configure page margins with geometry
 \geometry{left=0.90cm, right=0.90cm, top=0.90cm, bottom=0.90cm, footskip=0.55cm}
 
-% Color for highlights
-% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, awesome-orange
-%                 awesome-nephritis, awesome-concrete, awesome-darknight
-\definecolor{acvBlue}{HTML}{1F90FF}
-\definecolor{acvDarkGray}{HTML}{000000}
-\definecolor{acvTextGray}{HTML}{3E3E3E}
-\definecolor{acvSkillGray}{HTML}{3E3E3E}
-\definecolor{acvMetaGray}{HTML}{3E3E3E}
-\definecolor{acvDashGray}{HTML}{CCCCCC}
-\definecolor{acvMainRuleColor}{HTML}{000000}
-\colorlet{awesome}{acvBlue}
-\colorlet{text}{acvTextGray}
-\colorlet{graytext}{acvTextGray}
-\colorlet{sectiondivider}{acvMainRuleColor}
-% Uncomment if you would like to specify your own color
-% \definecolor{awesome}{HTML}{3E6D9C}
-
-% Colors for text
-% Uncomment if you would like to specify your own color
-% \definecolor{darktext}{HTML}{414141}
-% \definecolor{text}{HTML}{333333}
-% \definecolor{graytext}{HTML}{5D5D5D}
-% \definecolor{lighttext}{HTML}{999999}
-% \definecolor{sectiondivider}{HTML}{5D5D5D}
-
-% Set false if you don't want to highlight section with awesome color
-\setbool{acvSectionColorHighlight}{true}
+\input{shared/branding.tex}
+\input{shared/profile.tex}
 
 %-------------------------------------------------------------------------------
 % STYLE TOKENS
 %-------------------------------------------------------------------------------
-% Typography system
-\renewcommand*{\headerfont}{\sourcesanspro}
-\renewcommand*{\headerfontlight}{\sourcesansprolight}
-\renewcommand*{\bodyfont}{\sourcesanspro}
-\renewcommand*{\bodyfontlight}{\sourcesanspro}
 \setlength{\parskip}{0pt}
 
 % Rule thickness and spacing scale
@@ -73,10 +43,6 @@
 \newcommand{\acvSkillBlockGap}{0.18ex}
 \renewcommand{\acvSectionTopSkip}{1.7mm}
 \renewcommand{\acvSectionContentTopSkip}{1.0mm}
-\renewcommand{\acvHeaderAfterNameSkip}{1.2mm}
-\renewcommand{\acvHeaderAfterPositionSkip}{0.9mm}
-\renewcommand{\acvHeaderAfterAddressSkip}{0.9mm}
-\renewcommand{\acvHeaderAfterSocialSkip}{2.8mm}
 
 % Column geometry
 \newcommand{\acvLeftColumnWidth}{0.61\textwidth}
@@ -88,58 +54,6 @@
 \newlength{\acvBulletLabelSep}
 \setlength{\acvBulletLeftMargin}{1.45em}
 \setlength{\acvBulletLabelSep}{0.45em}
-
-
-%-------------------------------------------------------------------------------
-%	PERSONAL INFORMATION
-%	Comment any of the lines below if they are not required
-%-------------------------------------------------------------------------------
-% Available options: circle|rectangle,edge/noedge,left/right
-% \photo[rectangle,edge,right]{./src/assets/profile.png}
-\name{MAHDI}{HOSSEINI}
-\position{Front-End Engineer | React | Next.js | TypeScript Specialist}
-% \address{235, World Cup buk-ro, Mapo-gu, Seoul, 03936, Republic of Korea}
-\address{Yerevan, Armenia}
-
-% \mobile{(+82) 10-9030-1843}
-\mobile{+37477870243}
-\email{mahdi.hosseini.dev@gmail.com}
-%\dateofbirth{January 1st, 1970}
-% \homepage{www.posquit0.com}
-\github{s-mahdi}
-\linkedin{mahdi--dev}
-% \gitlab{gitlab-id}
-% \stackoverflow{SO-id}{SO-name}
-% \twitter{@twit}
-% \x{x-id}
-% \skype{skype-id}
-% \reddit{reddit-id}
-% \medium{madium-id}
-% \kaggle{kaggle-id}
-% \hackerrank{hackerrank-id}
-% \telegram{telegram-username}
-% \googlescholar{googlescholar-id}{name-to-display}
-%% \firstname and \lastname will be used
-% \googlescholar{googlescholar-id}{}
-% \extrainfo{extra information}
-
-
-% Header typography
-\renewcommand*{\headerfirstnamestyle}[1]{{
-  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
-}}
-\renewcommand*{\headerlastnamestyle}[1]{{
-  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
-}}
-\renewcommand*{\headerpositionstyle}[1]{{
-  \fontsize{9pt}{10.5pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=2.0}\color{acvBlue}\MakeUppercase{#1}
-}}
-\renewcommand*{\headeraddressstyle}[1]{{
-  \fontsize{8.6pt}{10pt}\headerfontlight\fontseries{b}\selectfont\color{acvBlue} #1
-}}
-\renewcommand*{\headersocialstyle}[1]{{
-  \fontsize{7.4pt}{9.2pt}\headerfontlight\fontseries{b}\selectfont\color{acvTextGray} #1
-}}
 
 % Section and body typography
 \renewcommand*{\paragraphstyle}{%
@@ -282,64 +196,19 @@
   \vspace{0.10mm}
 }
 
-\makeatletter
-% Consistent icon style for header contact row
-\newcommand*{\acvHeaderIcon}[1]{{\color{acvBlue}\fontsize{7.2pt}{7.2pt}\selectfont #1}}
-\newcommand*{\acvHeaderInlineSep}{\mbox{\hspace{0.42em}\textcolor{acvBlue}{|}\hspace{0.42em}}}
-\newcommand*{\acvHeaderContactItem}[3]{\href{#2}{\mbox{\acvHeaderIcon{#1}\hspace{0.30em}#3}}}
-
-% Custom header: left aligned, location line without icon, one compact contact row
-\renewcommand*{\makecvheader}[1][L]{%
-  \newlength{\headertextwidth}
-  \setlength{\headertextwidth}{\textwidth}
-  \begin{minipage}[c]{\headertextwidth}
-    \raggedright
-    \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
-    \\[\acvHeaderAfterNameSkip]%
-    \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position}\\[\acvHeaderAfterPositionSkip]}%
-    \ifthenelse{\isundefined{\@address}}{}{\headeraddressstyle{\@address}\\[\acvHeaderAfterAddressSkip]}%
-    \headersocialstyle{%
-      \newbool{isstart}%
-      \setbool{isstart}{true}%
-      % Email first
-      \ifthenelse{\isundefined{\@email}}%
-      {}%
-      {%
-        \acvHeaderContactItem{\faEnvelope}{mailto:\@email}{\@email}%
-        \setbool{isstart}{false}%
-      }%
-      % Then phone
-      \ifthenelse{\isundefined{\@mobile}}%
-      {}%
-      {%
-        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
-        \acvHeaderContactItem{\faMobile}{\@teluri}{\@mobile}%
-      }%
-      % LinkedIn
-      \ifthenelse{\isundefined{\@linkedin}}%
-      {}%
-      {%
-        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
-        \acvHeaderContactItem{\faLinkedin}{https://www.linkedin.com/in/\@linkedin}{\@linkedin}%
-      }%
-      % GitHub
-      \ifthenelse{\isundefined{\@github}}%
-      {}%
-      {%
-        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
-        \acvHeaderContactItem{\faSquareGithub}{https://github.com/\@github}{\@github}%
-      }%
-    } \\[\acvHeaderAfterSocialSkip]%
-  \end{minipage}%
-}
-\makeatother
-
 %-------------------------------------------------------------------------------
 \begin{document}
 
 % Print the header with above personal information
 % Give optional argument to change alignment(C: center, L: left, R: right)
 \makecvheader[L]
+
+% Print the footer with 3 arguments(<left>, <center>, <right>)
+% Leave any of these blank if they are not needed
+\makecvfooter
+{\today}
+{}
+{Mahdi Hosseini Resume}
 
 %-------------------------------------------------------------------------------
 %	CV/RESUME CONTENT

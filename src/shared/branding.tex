@@ -1,0 +1,99 @@
+%-------------------------------------------------------------------------------
+% SHARED BRANDING TOKENS (RESUME + COVER LETTER)
+%-------------------------------------------------------------------------------
+% Color system
+\definecolor{acvBlue}{HTML}{1F90FF}
+\definecolor{acvDarkGray}{HTML}{000000}
+\definecolor{acvTextGray}{HTML}{3E3E3E}
+\definecolor{acvSkillGray}{HTML}{3E3E3E}
+\definecolor{acvMetaGray}{HTML}{3E3E3E}
+\definecolor{acvDashGray}{HTML}{CCCCCC}
+\definecolor{acvMainRuleColor}{HTML}{000000}
+\colorlet{awesome}{acvBlue}
+\colorlet{text}{acvTextGray}
+\colorlet{graytext}{acvTextGray}
+\colorlet{sectiondivider}{acvMainRuleColor}
+
+% Keep section highlighting enabled by default
+\setbool{acvSectionColorHighlight}{true}
+
+% Typography system
+\renewcommand*{\headerfont}{\sourcesanspro}
+\renewcommand*{\headerfontlight}{\sourcesansprolight}
+\renewcommand*{\bodyfont}{\sourcesanspro}
+\renewcommand*{\bodyfontlight}{\sourcesanspro}
+
+% Header rhythm
+\renewcommand{\acvHeaderAfterNameSkip}{1.2mm}
+\renewcommand{\acvHeaderAfterPositionSkip}{0.9mm}
+\renewcommand{\acvHeaderAfterAddressSkip}{0.9mm}
+\renewcommand{\acvHeaderAfterSocialSkip}{2.8mm}
+
+% Header typography
+\renewcommand*{\headerfirstnamestyle}[1]{{
+  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
+}}
+\renewcommand*{\headerlastnamestyle}[1]{{
+  \fontsize{29pt}{31pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=3.5}\color{acvDarkGray} #1
+}}
+\renewcommand*{\headerpositionstyle}[1]{{
+  \fontsize{9pt}{10.5pt}\headerfontlight\fontseries{b}\selectfont\addfontfeatures{LetterSpace=2.0}\color{acvBlue}\MakeUppercase{#1}
+}}
+\renewcommand*{\headeraddressstyle}[1]{{
+  \fontsize{8.6pt}{10pt}\headerfontlight\fontseries{b}\selectfont\color{acvBlue} #1
+}}
+\renewcommand*{\headersocialstyle}[1]{{
+  \fontsize{7.4pt}{9.2pt}\headerfontlight\fontseries{b}\selectfont\color{acvTextGray} #1
+}}
+
+\makeatletter
+% Consistent icon style for header contact row
+\newcommand*{\acvHeaderIcon}[1]{{\color{acvBlue}\fontsize{7.2pt}{7.2pt}\selectfont #1}}
+\newcommand*{\acvHeaderInlineSep}{\mbox{\hspace{0.42em}\textcolor{acvBlue}{|}\hspace{0.42em}}}
+\newcommand*{\acvHeaderContactItem}[3]{\href{#2}{\mbox{\acvHeaderIcon{#1}\hspace{0.30em}#3}}}
+
+% Shared custom header: left aligned with compact contact row
+\renewcommand*{\makecvheader}[1][L]{%
+  \newlength{\headertextwidth}
+  \setlength{\headertextwidth}{\textwidth}
+  \begin{minipage}[c]{\headertextwidth}
+    \raggedright
+    \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
+    \\[\acvHeaderAfterNameSkip]%
+    \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position}\\[\acvHeaderAfterPositionSkip]}%
+    \ifthenelse{\isundefined{\@address}}{}{\headeraddressstyle{\@address}\\[\acvHeaderAfterAddressSkip]}%
+    \headersocialstyle{%
+      \newbool{isstart}%
+      \setbool{isstart}{true}%
+      % Email first
+      \ifthenelse{\isundefined{\@email}}%
+      {}%
+      {%
+        \acvHeaderContactItem{\faEnvelope}{mailto:\@email}{\@email}%
+        \setbool{isstart}{false}%
+      }%
+      % Then phone
+      \ifthenelse{\isundefined{\@mobile}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faMobile}{\@teluri}{\@mobile}%
+      }%
+      % LinkedIn
+      \ifthenelse{\isundefined{\@linkedin}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faLinkedin}{https://www.linkedin.com/in/\@linkedin}{\@linkedin}%
+      }%
+      % GitHub
+      \ifthenelse{\isundefined{\@github}}%
+      {}%
+      {%
+        \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderInlineSep}%
+        \acvHeaderContactItem{\faSquareGithub}{https://github.com/\@github}{\@github}%
+      }%
+    } \\[\acvHeaderAfterSocialSkip]%
+  \end{minipage}%
+}
+\makeatother
