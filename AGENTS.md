@@ -34,5 +34,16 @@
 - PRs should include a short summary, linked issue (if any), and updated PDFs or screenshots when visual output changes.
 - Confirm local build success (`make`) in the PR description.
 
+## Claude Sub-Agents
+
+- Custom sub-agents live in `.claude/agents/` and are auto-discovered by Claude Code.
+- `search` (Haiku): Perform web research on a topic and save structured findings to `docs/research/`.
+
+## Codex Sub-Agents
+
+- Codex project sub-agents live in `.codex/agents/`.
+- Codex sub-agent support is currently experimental in `codex-cli` and requires the `child_agents_md` feature flag. Multi-agent spawning may also require `multi_agent`.
+- `search`: Perform web research on a topic and save structured findings to `docs/research/`.
+
 ## Security & Tooling Notes
 - Default to CI-safe builds without unrestricted shell-escape. For code blocks, prefer `listings`; use `minted` only when the team explicitly accepts its external tooling and shell-escape requirements.
