@@ -31,10 +31,19 @@
 \renewcommand*{\recipientaddressstyle}[1]{{\fontsize{8.4pt}{9.8pt}\bodyfont\upshape\color{acvTextGray} #1}}
 \renewcommand*{\letterdatestyle}[1]{{\fontsize{8.1pt}{9.5pt}\bodyfontlight\upshape\color{acvMetaGray} #1}}
 \renewcommand*{\lettertitlestyle}[1]{{\fontsize{8.9pt}{10.3pt}\bodyfont\bfseries\color{acvBlue}\MakeUppercase{#1}}}
-\renewcommand*{\lettersectionstyle}[1]{{\fontsize{9.5pt}{10.9pt}\bodyfont\bfseries\color{acvDarkGray}\MakeUppercase{#1}}}
+\providecommand{\acvMainRuleThickness}{1.05pt}
+\renewcommand*{\lettersectionstyle}[1]{{\fontsize{11.2pt}{12.4pt}\bodyfont\bfseries\color{acvDarkGray}#1}}
 \renewcommand*{\lettertextstyle}{\fontsize{8.9pt}{11.7pt}\bodyfontlight\upshape\color{acvTextGray}}
 \renewcommand*{\letternamestyle}[1]{{\fontsize{9.1pt}{10.4pt}\bodyfont\bfseries\color{acvDarkGray} #1}}
 \renewcommand*{\letterenclosurestyle}[1]{{\fontsize{8.1pt}{9.4pt}\bodyfontlight\upshape\color{acvMetaGray} #1}}
+\renewcommand{\lettersection}[1]{%
+  \par\addvspace{1.8ex}%
+  \noindent\lettersectionstyle{#1}%
+  \phantomsection\\[-0.90ex]%
+  {\color{acvMainRuleColor}\rule{\textwidth}{\acvMainRuleThickness}}%
+  \par\nobreak\addvspace{0.7ex}%
+  \lettertextstyle
+}
 
 
 %-------------------------------------------------------------------------------
@@ -68,8 +77,8 @@
 % Leave any of these blank if they are not needed
 \makecvfooter
 {\today}
-{MAHDI HOSSEINI~~~·~~~Cover Letter}
 {}
+{MAHDI HOSSEINI~~~·~~~Cover Letter}
 
 % Print the title with above letter information
 \makelettertitle
@@ -79,14 +88,25 @@
 %-------------------------------------------------------------------------------
 \begin{cvletter}
 
-  \lettersection{Opening}
-  I am writing to apply for the <Role Title> position at <Company Name>. I am a Front-End Engineer focused on building high-quality, scalable product experiences with React, Next.js, and TypeScript. My recent work combines delivery speed, UI quality, and reliability across complex, data-heavy applications.
+  % ── Paragraph 1: Opening ─────────────────────────────────────────────────
+  % State the exact role + company. Mention a referral or contact if you have one
+  % ("After speaking with {Name} at {event}, I…"). Name something specific about
+  % the company — a product, value, or mission detail — not generic praise.
+  % End with a fit claim.
+  I am a Front-End Engineer with over six years of experience in platform engineering, scalable micro-frontend architecture, and high-performance design systems. I am writing to apply for the <Role Title> position at <Company Name>, which I discovered via <source, e.g.\ LinkedIn / your careers page>. <Company Name>'s work on <specific product, engineering initiative, or stated value> aligns closely with what I find most meaningful in this field, and I believe my background makes me a strong candidate for this role.
 
-  \lettersection{Relevant Impact}
-  At <Most Recent Company>, I led initiatives that improved release confidence and engineering throughput, including stronger test coverage, component system improvements, and CI/CD optimizations. This resulted in fewer production issues, faster build/deploy cycles, and more predictable delivery for product teams. I also partnered closely with design, backend, and product stakeholders to ship features with strong performance and maintainability.
+  % ── Paragraph 2: Strongest relevant experience ────────────────────────────
+  % One or two achievements with metrics, each mapped to a top job requirement.
+  % Embed keywords from the job description naturally.
+  At Neoxi, I stabilized the release pipeline by building comprehensive end-to-end and visual test suites with Playwright and Cypress, reducing CI minutes by approximately 30\% and cutting production bugs by 30\%. I also redesigned the GitHub Actions pipeline with build caching and automated releases, shortening build times from 12.5 to 8.5 minutes and increasing deployment frequency by 80\%. These improvements directly address <specific requirement from the posting, e.g.\ release reliability, CI/CD ownership, or delivery velocity>.
 
-  \lettersection{Why <Company Name>}
-  I am particularly interested in <Company Name> because of <product/mission/market focus>. I can contribute quickly by delivering accessible, reliable interfaces, strengthening frontend architecture, and helping teams ship faster with better quality controls. I would welcome the opportunity to discuss how my experience aligns with your goals for this role.
+  % ── Paragraph 3: Supporting experience or company fit ─────────────────────
+  % Cover a second dimension of the role, or deepen company-values alignment.
+  Earlier at Shop-Ware, I led a phased Backbone-to-React migration that reduced initial page load time by 40\%, and I mentored three mid-level engineers through code review and technical pairing, establishing standards that cut UI regressions by 25\%. I also drove adoption of a Storybook-based component library that accelerated UI delivery by 25\% and improved cross-team design consistency — the kind of platform investment that <Company Name>'s <engineering team / product focus> would benefit from directly.
+
+  % ── Paragraph 4: Closing + call to action ────────────────────────────────
+  % Two sentences only. Restate enthusiasm, then request next steps.
+  I welcome the opportunity to speak with you further about how my experience aligns with your goals for this role. Thank you for your time and consideration.
 
 \end{cvletter}
 
