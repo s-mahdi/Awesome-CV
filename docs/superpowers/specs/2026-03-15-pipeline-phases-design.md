@@ -19,7 +19,7 @@ Every phase must produce a complete, submittable application. Later phases reduc
 
 | Phase | Input | New Capability | Deliverable | Status |
 |---|---|---|---|---|
-| 0 | User pastes JD text | Fit eval + resume tailoring + cover letter | `job-list/` folder; user applies manually | **Implement now** |
+| 0 | User pastes JD text | Fit eval + resume tailoring notes + cover letter | `job-list/` folder; user applies manually | **Implement now** |
 | 1 | LinkedIn URL | `claude --chrome` JD capture replaces manual paste | Same as Phase 0, input automated | Next |
 | 2 | — | Recruiter/HR outreach email draft | Phase 0 artifacts + `outreach-draft.md` | After Phase 1 |
 | 3 | — | Browser auto-fill and submit | Fully automated application submission | Future |
@@ -33,29 +33,32 @@ Every phase must produce a complete, submittable application. Later phases reduc
 - Raw JD text (pasted by user)
 
 ### Steps
-1. `job-fit-evaluator` subagent — score fit, identify gaps, produce verdict
-2. `tailor` skill — resume adjustment suggestions based on JD keywords
-3. `coverletter` skill — tailored cover letter draft
+1. `job-fit-evaluator` subagent — score fit, identify gaps, produce verdict. Invoked without a remote-gate precondition (gate is not present in Phase 0; the subagent definition must be updated to treat it as optional). Workflow continues regardless of fit verdict (poor/moderate/strong) — the user decides whether to apply.
+2. `tailor` skill — invoked with explicit instruction to write suggestions to `job-list/COMPANY_NAME/resume-notes.md` and **not** modify `src/resume/*.tex`. This is enforced by the `/apply` skill's prompt to `tailor`: "Output bullet-level suggestions only to `resume-notes.md`. Do not edit any source files." The `tailor` skill's Required Agent/Skill Updates entry documents this invocation contract.
+3. `coverletter` skill — writes `src/coverletter.tex` and builds `src/coverletter.pdf` as normal, then `/apply` copies `src/coverletter.tex` into `job-list/COMPANY_NAME/cover-letter.tex`. Compilation is validated against `src/coverletter.tex` via `make coverletter.pdf`.
 
 ### Output
 ```
 job-list/COMPANY_NAME/
   job-posting.md       ← company, role title, cleaned JD text
   job-analysis.md      ← fit score, verdict, matched skills, gaps
-  cover-letter.tex     ← tailored cover letter source
-  resume-notes.md      ← bullet-level tailoring suggestions
+  cover-letter.tex     ← copy of src/coverletter.tex after skill run
+  resume-notes.md      ← bullet-level tailoring suggestions (source files unchanged)
 ```
 
 ### Rules
 - No remote-only gate (user decides which roles to pursue)
 - No browser dependency
-- All steps use existing implemented skills/subagents
+- `tailor` runs in suggestions-only mode — source resume files are never modified by `/apply`
+- `coverletter` output is copied from `src/` into `job-list/COMPANY_NAME/` after the build
 - Entry point: new `/apply` skill that orchestrates the sequence
 
 ### Acceptance Criteria
-- Given a company name and pasted JD, all four output files are produced
-- `cover-letter.tex` compiles without errors
-- `resume-notes.md` lists specific bullet changes keyed to JD requirements
+- Given a company name and pasted JD, all four output files are produced in `job-list/COMPANY_NAME/`
+- `job-list/COMPANY_NAME/cover-letter.tex` exists and matches `src/coverletter.tex` after the skill run
+- `make coverletter.pdf` succeeds after the skill runs (validates `src/coverletter.tex`)
+- `resume-notes.md` lists specific bullet changes keyed to JD requirements; no `src/resume/*.tex` files are modified
+- Workflow continues and produces all artifacts regardless of fit verdict (poor/moderate/strong)
 - Workflow completes without any manual skill invocation mid-run
 
 ## Phase 1 Detail
@@ -67,47 +70,68 @@ job-list/COMPANY_NAME/
 - Everything downstream (fit eval, tailor, cover letter) is unchanged
 
 ### Rules
-- Remote-only gate is removed (was a Phase 1 constraint in the old design)
+- Remote-only gate is removed (was a constraint in the old design; not carried forward)
 - If Chrome capture fails or JD is truncated, fall back to prompting the user to paste the JD manually (Phase 0 path)
+- `job-fit-evaluator` is still invoked without a remote-gate precondition (same as Phase 0)
 
 ## Phase 2 Detail
 
-Adds a recruiter/HR outreach email draft to the Phase 0 output folder:
+Adds a recruiter/HR outreach email draft to the output folder:
 ```
 job-list/COMPANY_NAME/
   outreach-draft.md    ← short recruiter message from recruiter-message-drafter subagent
 ```
 
-The `recruiter-message-drafter` subagent already exists; this phase wires it into the apply flow.
+The `recruiter-message-drafter` subagent already exists; this phase wires it into the apply flow. The filename `outreach-draft.md` supersedes `hr-email.md` referenced in the old `phase-2/hr-email-outreach.plan.md`; that plan file will be updated accordingly.
 
 ## Phases 3–5
 
-Design-only at this stage. Each phase plan file owns its own detailed spec:
-- Phase 3: `docs/plans/phase-3/auto-apply-fill.plan.md`
-- Phase 4: `docs/plans/phase-4/google-storage.plan.md`
-- Phase 5: `docs/plans/phase-5/` (email-monitoring + telegram-notifications)
+Design-only at this stage. Each phase plan file owns its own detailed spec.
+
+Current disk locations (files will be moved to match new phase numbering as part of restructuring):
+- Phase 3: `docs/plans/phase-3/auto-apply-fill.plan.md` (exists)
+- Phase 4: `docs/plans/phase-4/google-storage.plan.md` (exists; ClickUp tracking deferred — see note below)
+- Phase 5: currently at `docs/plans/phase-6/email-monitoring.plan.md` and `docs/plans/phase-6/telegram-notifications.plan.md` (will be moved to `phase-5/`)
+
+**Note on ClickUp tracking:** The old `phase-5/clickup-tracking.plan.md` is deferred. Phase 4 uses Google Sheets/Docs only for persistence. ClickUp integration may be revisited after Phase 4 is implemented.
 
 ## Impact on Existing Plans
 
 | Old Plan | Change |
 |---|---|
 | `foundation/chrome-skill-foundation.plan.md` | Skills are already implemented; foundation is complete. No new work. |
-| `phase-1/linkedin-remote-match.plan.md` | Renamed conceptually to Phase 1 (chrome capture). Remote gate removed. |
-| `phase-2/hr-email-outreach.plan.md` | Becomes Phase 2 (outreach draft appended to apply output). |
+| `phase-1/linkedin-remote-match.plan.md` | Becomes Phase 1 (chrome capture). Remote gate removed. Plan file to be updated. |
+| `phase-2/hr-email-outreach.plan.md` | Becomes Phase 2. Output filename changed from `hr-email.md` to `outreach-draft.md`. Plan file to be updated. |
 | `phase-3/auto-apply-fill.plan.md` | Becomes Phase 3. Unchanged. |
 | `phase-4/google-storage.plan.md` | Becomes Phase 4. Unchanged. |
-| `phase-5/clickup-tracking.plan.md` | Merged into Phase 4 (tracking). |
-| `phase-6/email-monitoring.plan.md` | Becomes Phase 5. |
-| `phase-6/telegram-notifications.plan.md` | Becomes Phase 5. |
+| `phase-5/clickup-tracking.plan.md` | Deferred. Not part of the new phase ladder. |
+| `phase-6/email-monitoring.plan.md` | Becomes Phase 5. Move to `phase-5/`. |
+| `phase-6/telegram-notifications.plan.md` | Becomes Phase 5. Move to `phase-5/`. |
 
 ## New Skill Required
 
 `/apply` — orchestrates the Phase 0 workflow:
-1. Accept company name + JD text
-2. Run `job-fit-evaluator`
-3. Run `tailor`
-4. Run `coverletter`
-5. Save artifacts to `job-list/COMPANY_NAME/`
-6. Report summary to user
+
+**Invocation:** Interactive prompt. When invoked, the skill asks:
+1. "Company name?" — single string, used as the folder name under `job-list/`
+2. "Paste the job description:" — user pastes raw JD text inline
+
+**Steps:**
+1. Write `job-list/COMPANY_NAME/job-posting.md` with company, role title (extracted from JD), and full JD text
+2. Run `job-fit-evaluator` (without remote-gate precondition) → write `job-analysis.md`
+3. Run `tailor` with instruction: "Output suggestions only to `job-list/COMPANY_NAME/resume-notes.md`. Do not edit any source files." → write `resume-notes.md`
+4. Run `coverletter` → build `src/coverletter.tex`, validate with `make coverletter.pdf`, copy to `job-list/COMPANY_NAME/cover-letter.tex`
+5. Report summary: fit verdict, artifact paths, next manual steps
+
+**Early-exit policy:** None. All steps run regardless of fit verdict. If a step fails, report the error and continue remaining steps.
 
 All constituent skills/subagents already exist. This skill is a thin orchestration wrapper.
+
+## Required Agent/Skill Updates
+
+| Asset | Required Change |
+|---|---|
+| `job-fit-evaluator` subagent | Remove hard dependency on remote-gate precondition; treat it as optional |
+| `tailor` skill | Document/enforce suggestions-only invocation path that does not modify `src/resume/*.tex` |
+| `phase-2/hr-email-outreach.plan.md` | Update output filename to `outreach-draft.md` |
+| `phase-1/linkedin-remote-match.plan.md` | Remove remote-only gate from rules |
