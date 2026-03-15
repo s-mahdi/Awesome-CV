@@ -85,6 +85,7 @@ Custom skills live in `.claude/skills/` and are invoked with `/skill-name`:
 | `/review` | Review the resume for clarity, impact, consistency, and ATS-friendliness |
 | `/scaffold` | Scaffold a new LaTeX project from small, medium, or large document templates in `docs/examples` |
 | `/tailor` | Tailor the resume for a specific job posting by adjusting summary, skills, and experience bullets |
+| `/track-job` | Ingest a raw job description, analyze fit against the resume, and create a fully-populated ClickUp tracking task |
 
 ## Sub-Agents
 
@@ -93,6 +94,7 @@ Custom sub-agents live in `.claude/agents/` and are auto-discovered by Claude Co
 | Agent | Model | Description |
 | ----- | ----- | ----------- |
 | `search` | Haiku | Perform web research on a topic and save structured findings to `docs/research/` |
+| `jd-analyzer` | Sonnet | Extract 20 job-tracking metrics from a JD + resume; returns YAML block for ClickUp ingestion. Dispatched by `/track-job`. |
 
 ## Multi-Agent Strategy
 
@@ -111,3 +113,11 @@ Use Mermaid syntax (`\`\`\`mermaid`) for all architecture and flow diagrams in p
 ## Security Note
 
 Default to CI-safe builds without unrestricted shell-escape. Prefer `listings`; use `minted` only when shell-escape and external tooling are explicitly approved.
+
+## Environment Variables
+
+Secrets are stored in `.env` (gitignored). Load with `source .env` or a tool like `dotenv` before making API calls.
+
+| Variable | Purpose |
+| -------- | ------- |
+| `CLICKUP_ACCESS_TOKEN` | ClickUp Personal Access Token — used for direct ClickUp REST API calls and `/track-job` field-setting |
