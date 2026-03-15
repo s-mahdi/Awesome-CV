@@ -74,6 +74,7 @@ Custom skills live in `.claude/skills/` and are invoked with `/skill-name`:
 | ----- | ----------- |
 | `/add-experience` | Add a new work experience entry to the resume |
 | `/add-section` | Add a new section to the resume by creating a `.tex` file and wiring it into `resume.tex` |
+| `/add-claude-skill` | Create or update a Claude skill file and mirror it between `.claude/skills` and `.codex/skills` |
 | `/add-skill` | Add or update resume skills, and mirror any new agent skill in both `.claude/skills` and `.codex/skills` |
 | `/ats-evaluate` | Score the resume against a job description using ATS-aligned evaluation dimensions |
 | `/build` | Build the resume PDF and report any LaTeX errors |
