@@ -4,7 +4,7 @@
 
 **Goal:** Build the `/apply` skill that accepts a company name and pasted JD, runs fit evaluation + tailoring suggestions + cover letter generation, and saves all artifacts to `job-list/COMPANY_NAME/` — enabling manual job applications from Day 0.
 
-**Architecture:** A thin orchestration skill (`/apply`) coordinates three existing skills/subagents in sequence: `job-fit-evaluator` → `tailor` (suggestions-only) → `coverletter`. It also requires two small updates: removing the hard remote-gate from `job-fit-evaluator`, and documenting the suggestions-only invocation contract in the `tailor` skill. Companion plan-file housekeeping moves the directory structure to match the new phase numbering.
+**Architecture:** A thin orchestration skill (`/apply`) coordinates three existing skills/subagents in sequence: `job-fit-evaluator` (dispatched as a subagent in isolated context) → `tailor` (suggestions-only) → `coverletter` (produces both `.tex` and `.pdf`, both copied to output folder). It also requires two small updates: removing the hard remote-gate from `job-fit-evaluator`, and documenting the suggestions-only invocation contract in the `tailor` skill. Companion plan-file housekeeping moves the directory structure to match the new phase numbering.
 
 **Tech Stack:** Markdown skill files (`.claude/skills/`, `.codex/skills/`), agent definition files (`.claude/agents/`, `.codex/agents/`), LaTeX (`make coverletter.pdf`), fish shell.
 
@@ -69,13 +69,18 @@ Create `job-list/COMPANY_NAME/job-posting.md` with:
 <full JD text>
 ```
 
-### Step 2 — Run job-fit-evaluator
+### Step 2 — Dispatch job-fit-evaluator subagent
 
-Pass the JD text to the `job-fit-evaluator` subagent. Save its output as
-`job-list/COMPANY_NAME/job-analysis.md`.
+Dispatch the `job-fit-evaluator` subagent in an **isolated context** using the
+Agent tool (or equivalent subagent dispatch). Do not run the evaluation inline.
 
-The evaluator does not require a remote-gate result. Pass only the JD text and
-resume file paths.
+Pass:
+- The full JD text
+- Resume file paths: `src/resume/summary.tex`, `src/resume/experience.tex`, `src/resume/skills.tex`
+
+Save the subagent's output as `job-list/COMPANY_NAME/job-analysis.md`.
+
+No remote-gate precondition is needed — the subagent evaluates any role.
 
 ### Step 3 — Run tailor (suggestions-only)
 
@@ -93,12 +98,15 @@ Do not run `make resume.pdf`. Do not write to any `src/` file.
 Invoke the `coverletter` skill with the JD text. It will write `src/coverletter.tex`
 and build `src/coverletter.pdf` via `make coverletter.pdf`.
 
-After the build succeeds, copy `src/coverletter.tex` to
-`job-list/COMPANY_NAME/cover-letter.tex`:
+After the build, copy both outputs to the job folder:
 
 ```bash
 cp src/coverletter.tex job-list/COMPANY_NAME/cover-letter.tex
+cp src/coverletter.pdf job-list/COMPANY_NAME/cover-letter.pdf
 ```
+
+If `make coverletter.pdf` fails, copy `src/coverletter.tex` anyway and report
+the LaTeX error. Skip the PDF copy if the PDF was not produced.
 
 ### Step 5 — Report summary
 
@@ -110,21 +118,23 @@ Print a summary:
   job-posting.md    — JD captured
   job-analysis.md   — Fit: <verdict> (<score>/100)
   resume-notes.md   — <N> tailoring suggestions
-  cover-letter.tex  — Cover letter built (coverletter.pdf)
+  cover-letter.tex  — Cover letter source
+  cover-letter.pdf  — Cover letter PDF (ready to attach)
 
 Next steps:
   1. Review job-list/COMPANY_NAME/resume-notes.md and apply any changes manually
-  2. Review job-list/COMPANY_NAME/cover-letter.tex — build PDF with: make coverletter.pdf
-  3. Submit your application with the generated cover letter PDF
+  2. Attach job-list/COMPANY_NAME/cover-letter.pdf to your application
+  3. Submit
 ```
 
 ## Rules
 
 - No remote-only gate. Apply to any role the user provides.
 - Never modify `src/resume/*.tex` files.
-- All four output files must be written even if a step returns a poor-fit verdict.
-- If `make coverletter.pdf` fails, report the LaTeX error but still copy
-  `src/coverletter.tex` to `job-list/COMPANY_NAME/cover-letter.tex`.
+- All five output files must be written even if a step returns a poor-fit verdict.
+- `job-fit-evaluator` must be dispatched as a subagent (isolated context), never run inline.
+- If `make coverletter.pdf` fails, report the LaTeX error, copy `src/coverletter.tex`
+  anyway, and skip the PDF copy.
 - Create `job-list/COMPANY_NAME/` if it does not exist.
 ```
 
@@ -508,6 +518,7 @@ git commit -m "docs(plans): update master pipeline plan to Phase 0 target"
 Run these checks after all tasks are complete:
 
 - [ ] `/apply` skill file exists at `.claude/skills/apply/SKILL.md` and `.codex/skills/apply/SKILL.md`
+- [ ] `/apply` skill dispatches `job-fit-evaluator` as a subagent (Agent tool), not inline
 - [ ] `CLAUDE.md` skills table contains `/apply`
 - [ ] `job-fit-evaluator.md` no longer has a hard remote-gate rule
 - [ ] `tailor/SKILL.md` documents suggestions-only mode
@@ -525,7 +536,7 @@ Verify `/apply` skill can be invoked end-to-end with a real JD:
 1. Run `/apply`
 2. Enter company name: `TEST_COMPANY`
 3. Paste a short JD (3–5 lines is enough)
-4. Confirm all four files appear under `job-list/TEST_COMPANY/`
+4. Confirm all five files appear under `job-list/TEST_COMPANY/`
 5. Confirm no `src/resume/*.tex` files were modified (`git diff src/`)
 6. Confirm `make coverletter.pdf` succeeds
 
@@ -535,5 +546,5 @@ git diff src/resume/
 
 # Verify artifact folder
 ls job-list/TEST_COMPANY/
-# Expected: cover-letter.tex  job-analysis.md  job-posting.md  resume-notes.md
+# Expected: cover-letter.pdf  cover-letter.tex  job-analysis.md  job-posting.md  resume-notes.md
 ```
