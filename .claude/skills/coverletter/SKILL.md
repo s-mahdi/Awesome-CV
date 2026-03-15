@@ -154,3 +154,17 @@ These real examples illustrate the patterns above. Use them as tone and structur
 - Proofread for spelling and grammar — errors are disqualifying.
 - Match accent color and fonts to the resume (`acvBlue` / `awesome-red` as configured).
 - Build with `make coverletter.pdf` to verify compilation after editing.
+
+## Writing Style
+
+- Use clear, simple language.
+- Use active voice. Avoid passive voice.
+- Use "you" and "your" to address the reader directly where natural.
+- Support claims with data and specific examples.
+- Use only commas, periods, semicolons, colons, and parentheses for punctuation. Do not use em dashes.
+- Avoid constructions like "not just X, but also Y".
+- Avoid metaphors and clichés.
+- Avoid generalizations.
+- Avoid setup phrases: "in conclusion", "in closing", "to summarize", and similar.
+- Avoid unnecessary adjectives and adverbs.
+- Do not use these words: can, may, just, that, very, really, literally, actually, certainly, probably, basically, could, maybe, delve, embark, enlightening, esteemed, shed light, craft, crafting, imagine, realm, game-changer, unlock, discover, skyrocket, revolutionize, disruptive, utilize, utilizing, tapestry, illuminate, unveil, pivotal, intricate, elucidate, hence, furthermore, however, harness, exciting, groundbreaking, cutting-edge, remarkable, remains to be seen, navigating, landscape, stark, testament, in summary, in conclusion, moreover.
