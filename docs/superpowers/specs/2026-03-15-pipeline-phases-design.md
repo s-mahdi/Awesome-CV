@@ -34,7 +34,7 @@ Every phase must produce a complete, submittable application. Later phases reduc
 
 ### Steps
 1. **Dispatch `job-fit-evaluator` as a subagent** — runs in an isolated context with its own tool access. Pass the JD text and resume file paths. Receive `job-analysis.md` content back. No remote-gate precondition. Workflow continues regardless of verdict.
-2. `tailor` skill — invoked with explicit instruction to write suggestions to `job-list/COMPANY_NAME/resume-notes.md` and **not** modify `src/resume/*.tex`. This is enforced by the `/apply` skill's prompt to `tailor`: "Output bullet-level suggestions only to `resume-notes.md`. Do not edit any source files." The `tailor` skill's Required Agent/Skill Updates entry documents this invocation contract.
+2. `tailor` skill — modifies `src/resume/*.tex` in place, builds `make resume.pdf`, copies `src/resume.pdf` to `job-list/COMPANY_NAME/resume.pdf`, then restores the original source file contents. Also writes `job-list/COMPANY_NAME/resume-notes.md` summarising each change made.
 3. `coverletter` skill — writes `src/coverletter.tex` and builds `src/coverletter.pdf` via `make coverletter.pdf`, then `/apply` copies both `src/coverletter.tex` → `job-list/COMPANY_NAME/cover-letter.tex` and `src/coverletter.pdf` → `job-list/COMPANY_NAME/cover-letter.pdf`.
 
 ### Output
@@ -42,9 +42,10 @@ Every phase must produce a complete, submittable application. Later phases reduc
 job-list/COMPANY_NAME/
   job-posting.md       ← company, role title, cleaned JD text
   job-analysis.md      ← fit score, verdict, matched skills, gaps
+  resume.pdf           ← tailored resume PDF (src files restored after build)
+  resume-notes.md      ← summary of changes made to produce the tailored resume
   cover-letter.tex     ← copy of src/coverletter.tex after skill run
   cover-letter.pdf     ← copy of src/coverletter.pdf after build
-  resume-notes.md      ← bullet-level tailoring suggestions (source files unchanged)
 ```
 
 ### Rules
@@ -55,11 +56,13 @@ job-list/COMPANY_NAME/
 - Entry point: new `/apply` skill that orchestrates the sequence
 
 ### Acceptance Criteria
-- Given a company name and pasted JD, all five output files are produced in `job-list/COMPANY_NAME/`
+- Given a company name and pasted JD, all six output files are produced in `job-list/COMPANY_NAME/`
+- `job-list/COMPANY_NAME/resume.pdf` exists and was built from the tailored source
+- `src/resume/*.tex` files are restored to their original content after the tailored build
 - `job-list/COMPANY_NAME/cover-letter.tex` exists and matches `src/coverletter.tex` after the skill run
 - `job-list/COMPANY_NAME/cover-letter.pdf` exists and matches `src/coverletter.pdf` after the build
-- `make coverletter.pdf` succeeds after the skill runs (validates `src/coverletter.tex`)
-- `resume-notes.md` lists specific bullet changes keyed to JD requirements; no `src/resume/*.tex` files are modified
+- `make coverletter.pdf` and `make resume.pdf` both succeed
+- `resume-notes.md` summarises each change made to produce the tailored resume
 - Workflow continues and produces all artifacts regardless of fit verdict (poor/moderate/strong)
 - Workflow completes without any manual skill invocation mid-run
 

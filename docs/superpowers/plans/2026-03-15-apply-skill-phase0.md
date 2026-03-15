@@ -82,16 +82,19 @@ Save the subagent's output as `job-list/COMPANY_NAME/job-analysis.md`.
 
 No remote-gate precondition is needed — the subagent evaluates any role.
 
-### Step 3 — Run tailor (suggestions-only)
+### Step 3 — Run tailor (build tailored resume PDF)
 
-Invoke the `tailor` skill with this explicit instruction:
+Invoke the `tailor` skill with the JD text. The skill will:
 
-> "Output bullet-level tailoring suggestions to `job-list/COMPANY_NAME/resume-notes.md`
-> based on the following JD. Do NOT modify any files in `src/resume/`. List each
-> suggested change as: [file] → [current bullet] → [suggested rewrite] with the
-> JD keyword it targets."
+1. Save the original contents of `src/resume/summary.tex`, `src/resume/skills.tex`,
+   and `src/resume/experience.tex`.
+2. Edit the source files to tailor them for the JD.
+3. Run `make resume.pdf`.
+4. Copy `src/resume.pdf` to `job-list/COMPANY_NAME/resume.pdf`.
+5. Write a summary of all changes to `job-list/COMPANY_NAME/resume-notes.md`.
+6. Restore the original source file contents.
 
-Do not run `make resume.pdf`. Do not write to any `src/` file.
+After the skill returns, verify `src/resume/*.tex` matches the pre-run originals.
 
 ### Step 4 — Run coverletter
 
@@ -117,22 +120,24 @@ Print a summary:
 
   job-posting.md    — JD captured
   job-analysis.md   — Fit: <verdict> (<score>/100)
-  resume-notes.md   — <N> tailoring suggestions
+  resume.pdf        — Tailored resume (source files restored)
+  resume-notes.md   — Summary of tailoring changes
   cover-letter.tex  — Cover letter source
   cover-letter.pdf  — Cover letter PDF (ready to attach)
 
 Next steps:
-  1. Review job-list/COMPANY_NAME/resume-notes.md and apply any changes manually
-  2. Attach job-list/COMPANY_NAME/cover-letter.pdf to your application
+  1. Review job-list/COMPANY_NAME/resume-notes.md for the changes made
+  2. Attach resume.pdf and cover-letter.pdf to your application
   3. Submit
 ```
 
 ## Rules
 
 - No remote-only gate. Apply to any role the user provides.
-- Never modify `src/resume/*.tex` files.
-- All five output files must be written even if a step returns a poor-fit verdict.
+- All six output files must be written even if a step returns a poor-fit verdict.
 - `job-fit-evaluator` must be dispatched as a subagent (isolated context), never run inline.
+- `src/resume/*.tex` source files must be restored to their original content after the tailored build.
+- If `make resume.pdf` fails, report the LaTeX error, skip the resume PDF copy, and continue.
 - If `make coverletter.pdf` fails, report the LaTeX error, copy `src/coverletter.tex`
   anyway, and skip the PDF copy.
 - Create `job-list/COMPANY_NAME/` if it does not exist.
@@ -272,10 +277,11 @@ git commit -m "fix(agent): make remote-gate optional in job-fit-evaluator"
 
 ---
 
-### Task 5: Document suggestions-only mode in `tailor` skill
+### Task 5: Update `tailor` skill — add restore step, writing style, and suggestions-only mode
 
-The `tailor` skill currently always edits `src/resume/*.tex`. Add a documented
-invocation path that suppresses source edits for use by `/apply`.
+The `tailor` skill needs three additions: (1) a save-and-restore step so source files
+are clean after the tailored build, (2) writing style rules for rewritten prose,
+(3) a suggestions-only mode documented for other callers.
 
 - [ ] **Step 1: Edit `.claude/skills/tailor/SKILL.md`**
 
@@ -519,6 +525,7 @@ Run these checks after all tasks are complete:
 
 - [ ] `/apply` skill file exists at `.claude/skills/apply/SKILL.md` and `.codex/skills/apply/SKILL.md`
 - [ ] `/apply` skill dispatches `job-fit-evaluator` as a subagent (Agent tool), not inline
+- [ ] `job-list/COMPANY_NAME/resume.pdf` produced and `src/resume/*.tex` restored after run
 - [ ] `CLAUDE.md` skills table contains `/apply`
 - [ ] `job-fit-evaluator.md` no longer has a hard remote-gate rule
 - [ ] `tailor/SKILL.md` documents suggestions-only mode
@@ -546,5 +553,5 @@ git diff src/resume/
 
 # Verify artifact folder
 ls job-list/TEST_COMPANY/
-# Expected: cover-letter.pdf  cover-letter.tex  job-analysis.md  job-posting.md  resume-notes.md
+# Expected: cover-letter.pdf  cover-letter.tex  job-analysis.md  job-posting.md  resume-notes.md  resume.pdf
 ```
