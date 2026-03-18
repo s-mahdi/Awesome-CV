@@ -78,6 +78,7 @@ Custom skills live in `.claude/skills/` and are invoked with `/skill-name`:
 | `/add-skill` | Add or update resume skills, and mirror any new agent skill in both `.claude/skills` and `.codex/skills` |
 | `/ats-evaluate` | Score the resume against a job description using ATS-aligned evaluation dimensions |
 | `/build` | Build the resume PDF and report any LaTeX errors |
+| `/find-skills` | Discover and install agent skills from the open skills ecosystem (skills.sh) |
 | `/ci` | Generate or update a GitHub Actions workflow for building LaTeX documents |
 | `/commit` | Stage and commit changes following atomic commits and Conventional Commits best practices |
 | `/coverletter` | Generate or update a tailored cover letter for a job posting |

@@ -3,6 +3,10 @@
     "clickup": {
       "type": "http",
       "url": "https://mcp.clickup.com/mcp"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com/sse"
     }
   }
 }
