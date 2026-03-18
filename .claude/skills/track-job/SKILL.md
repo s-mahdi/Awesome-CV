@@ -34,16 +34,69 @@ Wait for the agent to return a fenced YAML block. Parse all 20 fields from it.
 If the YAML block is malformed or missing fields, ask the user whether to retry or proceed
 with partial data.
 
-## Step 3 — Resolve ClickUp Assignee
+## Step 3 — Google Drive Setup
+
+Dispatch a **Haiku** sub-agent (`subagent_type: general-purpose`, model: `claude-haiku-4-5-20251001`)
+to perform all Drive setup checks and provisioning. Pass it these instructions verbatim:
+
+> **Drive Setup Agent Instructions**
+>
+> Work autonomously through each step. Do not stop on failures — fix them instead.
+>
+> **1. Verify or install the gws CLI**
+>    - Run `which gws 2>/dev/null || echo "NOT_FOUND"`.
+>    - If NOT_FOUND, detect the OS:
+>      - macOS → run `brew install gws`. If brew is unavailable, fall back to
+>        `npm install -g @google/gws`.
+>      - Linux/Windows → run `npm install -g @google/gws`.
+>    - After installing, run `gws version` to confirm success.
+>    - If installation fails, output `{ "error": "gws install failed: <reason>" }` and stop.
+>
+> **2. Verify authentication**
+>    - Run `gws whoami 2>/dev/null || echo "NOT_AUTHENTICATED"`.
+>    - If NOT_AUTHENTICATED, run `gws login` to open the browser OAuth flow.
+>    - After login, re-run `gws whoami` and confirm it returns a valid email.
+>    - If still unauthenticated, output `{ "error": "gws auth failed" }` and stop.
+>
+> **3. Locate or create the "Yerevan Job Application" root folder**
+>    - Use the gws-drive skill to search for a folder named exactly
+>      `Yerevan Job Application` in the user's Drive root.
+>    - If found, capture its id as ROOT_FOLDER_ID.
+>    - If not found, create the folder using gws-drive and capture the new id as ROOT_FOLDER_ID.
+>
+> **4. Fetch ClickUp members and share the root folder with each**
+>    - Call the `clickup_get_workspace_members` MCP tool to retrieve the full member list.
+>    - Extract each member's display name and email.
+>    - Use gws-drive to list current permissions on ROOT_FOLDER_ID.
+>    - For any member whose email is not already a permission, share the folder with them
+>      using gws-drive with `role: writer`.
+>
+> **5. Ensure per-member subfolders exist inside the root folder**
+>    - For each ClickUp member display name, search for a subfolder with that exact name
+>      inside ROOT_FOLDER_ID using gws-drive.
+>    - If a subfolder does not exist, create it inside ROOT_FOLDER_ID using gws-drive.
+>    - Build a map of `{ "<member_display_name>": "<subfolder_id>", ... }`.
+>
+> **Return** a JSON object:
+> ```json
+> { "root_folder_id": "...", "member_folders": { "<name>": "<folder_id>" } }
+> ```
+
+Wait for the Haiku agent to complete. If it returns an `error` key, surface the message
+to the user with `AskUserQuestion` and **do not proceed** until resolved.
+
+Capture `root_folder_id` and `member_folders` from the result for use in Step 7.
+
+## Step 4 — Resolve ClickUp Assignee
 
 Use the `clickup_resolve_assignees` MCP tool to look up the intended assignee.
 
 - Default assignee name: **Mahdi**
-- If resolved successfully, capture the `user_id`.
+- If resolved successfully, capture the `user_id` and `display_name`.
 - If not found or ambiguous, use `AskUserQuestion` to confirm the correct member before
   proceeding. **Do NOT create the task until the assignee is confirmed.**
 
-## Step 4 — Create ClickUp Task
+## Step 5 — Create ClickUp Task
 
 Use `clickup_create_task` MCP:
 
@@ -55,7 +108,7 @@ assignees: [user_id]
 
 Capture the returned `task_id` and `task_url`.
 
-## Step 5 — Set All 20 Custom Fields via REST API
+## Step 6 — Set All 20 Custom Fields via REST API
 
 Load `CLICKUP_ACCESS_TOKEN` from the environment (it is already in `.env`; run
 `source .env` or read via shell substitution).
@@ -119,13 +172,52 @@ Value: `false`
 | 🔴 knockout_factor_check | `d91b28a7-037e-4a63-a452-bcd58b87261c` | Pass=0, Fail=1 |
 | 🎯 final_recommendation | `96852b69-b6bc-4e6a-b0dd-88ceb3a07d7a` | Apply=0, Skip=1, Maybe=2 |
 
-## Step 6 — Report Result
+## Step 7 — Create Drive Folder and Google Doc
+
+Dispatch a **Haiku** sub-agent (`subagent_type: general-purpose`, model: `claude-haiku-4-5-20251001`)
+to create the job artifacts in Google Drive. Pass it the following context and instructions:
+
+Context to inject into the prompt:
+- Assignee display name (from Step 4)
+- `member_folders` map (from Step 3): `{ "<name>": "<folder_id>" }`
+- `root_folder_id` (from Step 3)
+- Job title (YAML `title` field)
+- Organization (YAML `organization` field)
+- Full JD text (from Step 1)
+
+> **Drive Artifact Agent Instructions**
+>
+> 1. Look up the assignee's folder ID from `member_folders` using the assignee display name
+>    (case-insensitive match). If no match is found, use `root_folder_id` as the parent.
+>
+> 2. Create a subfolder named `[title] - [organization]` inside the assignee's folder
+>    using gws-drive.
+>
+> 3. Create a Google Doc inside that new subfolder using gws-docs.
+>    - Doc title: `[title] - [organization]`
+>    - Doc body: the full job description text, verbatim.
+>
+> 4. Return JSON:
+>    ```json
+>    { "folder_url": "...", "doc_url": "..." }
+>    ```
+
+Capture `folder_url` and `doc_url` from the result for the Step 8 report.
+
+If the agent returns an error, log it as a warning and continue — Drive artifact creation
+is non-blocking for the overall task.
+
+## Step 8 — Report Result
 
 Print a summary in this format:
 
 ```
 ✅ ClickUp task created: {organization} — {title}
 🔗 {task_url}
+
+Drive Artifacts:
+  📁 {folder_url}
+  📄 {doc_url}
 
 Field Summary:
   verdict:              {verdict}
@@ -137,11 +229,14 @@ Field Summary:
 ```
 
 If any field calls failed, list them under "⚠️ Failed fields:" with the error.
+If Drive artifact creation failed, note it under "⚠️ Drive:" with the error.
 
 ## Error Handling
 
 - **No JD provided** → ask before any action
+- **gws install/auth failure** → surface error via `AskUserQuestion`, block until resolved
 - **Assignee not found** → ask before creating task
 - **YAML parse failure** → show the raw output and ask whether to retry
 - **ClickUp task creation fails** → surface the error; do not proceed to field-setting
 - **Individual field curl failures** → log as warning, continue with remaining fields
+- **Drive folder/doc creation fails** → log as warning, still complete the report
