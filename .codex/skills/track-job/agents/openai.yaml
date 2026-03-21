@@ -1,0 +1,4 @@
+interface:
+  display_name: "Track Job"
+  short_description: "Analyze JD, track in ClickUp, and generate application artifacts"
+  default_prompt: "Use $track-job to ingest a job description, log it to ClickUp, and — if a fit — tailor the resume, generate a cover letter, and attach PDFs to the task."
