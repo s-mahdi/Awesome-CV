@@ -75,33 +75,17 @@ docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD":/doc texlive/tex
 
 In either case, this should result in the creation of ``{your-cv}.pdf``
 
-### Job Tracking (Optional)
+### Job Tracking
 
-The `/track-job` skill integrates with [ClickUp](https://clickup.com) to automatically
-create a tracked task from any job description, including AI-powered fit evaluation
-against your resume.
-
-**Setup:**
-
-1. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Fill in your [ClickUp API token](https://app.clickup.com/settings/apps):
-   ```
-   CLICKUP_ACCESS_TOKEN=your_clickup_personal_access_token_here
-   ```
-
-3. The skill requires [Claude Code](https://claude.ai/code) with the ClickUp MCP
-   configured in your Claude settings.
+The `/track-job` skill analyzes any job description against your resume and generates
+tailored application artifacts when the fit is strong.
 
 **Usage:**
 
 Paste a raw job description into Claude Code and run `/track-job`. It will:
 - Extract metadata (company, title, location, work arrangement, visa, etc.)
 - Evaluate fit against your resume (strengths, gaps, verdict, recommendation)
-- Create a ClickUp task with all 20 fields pre-populated
+- If recommended: tailor the resume, generate a cover letter, build PDFs, and save them to `job-list/{company}/`
 
 
 ## Credit
