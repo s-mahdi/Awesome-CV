@@ -811,11 +811,13 @@
     \recipienttitlestyle{\@recipientname} & \letterdatestyle{\@letterdate}
   \end{tabular*}
   \begin{singlespace}
-    \recipientaddressstyle{\@recipientaddress} \\\\
+    \ifthenelse{\equal{\@recipientaddress}{}}%
+      {}%
+      {\recipientaddressstyle{\@recipientaddress} \\\\}%
   \end{singlespace}
   \ifthenelse{\isundefined{\@lettertitle}}
   {}
-  {\lettertitlestyle{\@lettertitle} \\}
+  {\lettertitlestyle{\@lettertitle}\par}
   \lettertextstyle{\@letteropening}
 }
 

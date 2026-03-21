@@ -1,4 +1,3 @@
-%!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 % Awesome CV LaTeX Template for Cover Letter
 %
@@ -50,16 +49,21 @@
 %	LETTER INFORMATION
 %	All of the below lines must be filled out
 %-------------------------------------------------------------------------------
-% The company being applied to
+% Recipient header: first arg is the company name shown at the top of the letter.
+% Second arg (address) is intentionally left empty — the applicant's location is
+% already in the CV header, and repeating a company address adds no value.
 \recipient
-  {<Hiring Manager Name>}
-  {<Company Name>\\<Street Address>\\<City, State ZIP>}
-% The date on the letter, default is the date of compilation
-\letterdate{\today}
-% The title of the letter
-\lettertitle{Application for <Role Title>}
-% How the letter is opened
-\letteropening{Dear Hiring Manager,}
+  {<Company Name>}
+  {}
+% Date is intentionally omitted here — it is already shown in the footer (left slot).
+\letterdate{}
+% Letter title shown below the recipient block.
+% Contains only the role title — the company name is already displayed above in
+% the recipient header, so including it here would duplicate it.
+\lettertitle{<Role Title>}
+% Opening salutation. If the hiring manager's name is known, use their name
+% (e.g. "Dear Jackson,"). If unknown, keep the generic fallback below.
+\letteropening{Dear <Hiring Manager Name>,}
 % How the letter is closed
 \letterclosing{Sincerely,}
 % Any enclosures with the letter
