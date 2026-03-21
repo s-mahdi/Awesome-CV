@@ -1,23 +1,26 @@
 {
-    "latex-workshop.latex.tools": [
-        {
-            "name": "xelatex",
-            "command": "xelatex",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ]
-        }
-    ],
-    "latex-workshop.latex.recipes": [
-        {
-            "name": "xelatex",
-            "tools": [
-                "xelatex"
-            ]
-        }
-    ],
-    "latex-workshop.latex.recipe.default": "xelatex"
+  "latex-workshop.latex.tools": [
+    {
+      "name": "xelatex",
+      "command": "/Library/TeX/texbin/xelatex",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOC%"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "xelatex",
+      "tools": [
+        "xelatex"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "xelatex",
+  "latex-workshop.kpsewhich.path": "/Library/TeX/texbin/kpsewhich",
+  "latex-workshop.formatting.latexindent.path": "/Library/TeX/texbin/latexindent",
+  "latex-utilities.countWord.path": "/Library/TeX/texbin/texcount"
 }
